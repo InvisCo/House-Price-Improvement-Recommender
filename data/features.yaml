@@ -1,4 +1,5 @@
 BldgType:
+  label: Building Type
   NA: ""
   type: categorical
   values:
@@ -13,7 +14,9 @@ BldgType:
     - Duplex
     - Townhouse End Unit
     - Townhouse Inside Unit
+  input: selectbox
 HouseStyle:
+  label: Style of House
   NA: ""
   type: categorical
   values:
@@ -34,7 +37,9 @@ HouseStyle:
     - Two and one-half story, 2nd level finished
     - Split Foyer
     - Split Level
+  input: selectbox
 ExterCond:
+  label: Exterior Condition
   NA: ""
   type: categorical
   values:
@@ -49,15 +54,21 @@ ExterCond:
     - Typical
     - Fair
     - Poor
+  input: radio
 YearRemodAdd:
+  label: Remodel Year
   max: 2010
   min: 1950
   type: numerical
+  input: number_input
 LotArea:
+  label: Lot Size (square feet)
   max: 250000
   min: 0
   type: numerical
+  input: number_input
 BsmtCond:
+  label: Basement Condition
   NA: "NA"
   type: categorical
   values:
@@ -74,47 +85,69 @@ BsmtCond:
     - Fair - dampness or some cracking or settling
     - Poor - Severe cracking, settling, or wetness
     - No Basement
+  input: selectbox
 BsmtFinSF:
+  label: Basement Area - Finished (square feet)
   max: 6000
   min: 0
   type: numerical
-BsmtFullBath:
-  max: 3
-  min: 0
-  type: numerical
-BsmtHalfBath:
-  max: 2
-  min: 0
-  type: numerical
+  input: number_input
 BsmtUnfSF:
+  label: Basement Area - Unfinished (square feet)
   max: 2500
   min: 0
   type: numerical
+  input: number_input
+BsmtFullBath:
+  label: Number of Full Bathrooms in Basement
+  max: 5
+  min: 0
+  type: numerical
+  input: slider
+BsmtHalfBath:
+  label: Number of Half Bathrooms in Basement
+  max: 5
+  min: 0
+  type: numerical
+  input: slider
 GrLivArea:
+  label: Above Grade Living Area (square feet)
   max: 6000
   min: 0
   type: numerical
+  input: number_input
 BedroomAbvGr:
-  max: 8
+  label: Number of Bedrooms Above Grade
+  max: 10
   min: 0
   type: numerical
+  input: slider
 KitchenAbvGr:
-  max: 3
+  label: Number of Kitchens
+  max: 5
   min: 0
   type: numerical
+  input: slider
 FullBath:
-  max: 3
+  label: Number of Full Bathrooms
+  max: 5
   min: 0
   type: numerical
+  input: slider
 HalfBath:
-  max: 2
+  label: Number of Half Bathrooms
+  max: 5
   min: 0
   type: numerical
+  input: slider
 Fireplaces:
-  max: 3
+  label: Number of Fireplaces
+  max: 5
   min: 0
   type: numerical
+  input: slider
 CentralAir:
+  label: Is Central Air Conditioning Installed?
   NA: ""
   type: categorical
   values:
@@ -123,7 +156,9 @@ CentralAir:
   labels:
     - Yes
     - No
+  input: radio
 PavedDrive:
+  label: Is the Driveway Paved?
   NA: ""
   type: categorical
   values:
@@ -134,3 +169,4 @@ PavedDrive:
     - Paved
     - Partial Pavement
     - Dirt/Gravel
+  input: radio
