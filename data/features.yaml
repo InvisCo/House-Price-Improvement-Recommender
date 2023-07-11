@@ -1,0 +1,136 @@
+BldgType:
+  NA: ""
+  type: categorical
+  values:
+    - 1Fam
+    - 2fmCon
+    - Duplex
+    - TwnhsE
+    - Twnhs
+  labels:
+    - Single-family Detached
+    - Two-family Conversion
+    - Duplex
+    - Townhouse End Unit
+    - Townhouse Inside Unit
+HouseStyle:
+  NA: ""
+  type: categorical
+  values:
+    - 1Story
+    - 1.5Fin
+    - 1.5Unf
+    - 2Story
+    - 2.5Unf
+    - 2.5Fin
+    - SFoyer
+    - SLvl
+  labels:
+    - One story
+    - One and one-half story, 2nd level finished
+    - One and one-half story, 2nd level unfinished
+    - Two story
+    - Two and one-half story, 2nd level unfinished
+    - Two and one-half story, 2nd level finished
+    - Split Foyer
+    - Split Level
+ExterCond:
+  NA: ""
+  type: categorical
+  values:
+    - Ex
+    - Gd
+    - TA
+    - Fa
+    - Po
+  labels:
+    - Excellent
+    - Good
+    - Typical
+    - Fair
+    - Poor
+YearRemodAdd:
+  max: 2010
+  min: 1950
+  type: numerical
+LotArea:
+  max: 250000
+  min: 0
+  type: numerical
+BsmtCond:
+  NA: "NA"
+  type: categorical
+  values:
+    - Ex
+    - Gd
+    - TA
+    - Fa
+    - Po
+    - NA
+  labels:
+    - Excellent
+    - Good
+    - Typical - slight dampness allowed
+    - Fair - dampness or some cracking or settling
+    - Poor - Severe cracking, settling, or wetness
+    - No Basement
+BsmtFinSF:
+  max: 6000
+  min: 0
+  type: numerical
+BsmtFullBath:
+  max: 3
+  min: 0
+  type: numerical
+BsmtHalfBath:
+  max: 2
+  min: 0
+  type: numerical
+BsmtUnfSF:
+  max: 2500
+  min: 0
+  type: numerical
+GrLivArea:
+  max: 6000
+  min: 0
+  type: numerical
+BedroomAbvGr:
+  max: 8
+  min: 0
+  type: numerical
+KitchenAbvGr:
+  max: 3
+  min: 0
+  type: numerical
+FullBath:
+  max: 3
+  min: 0
+  type: numerical
+HalfBath:
+  max: 2
+  min: 0
+  type: numerical
+Fireplaces:
+  max: 3
+  min: 0
+  type: numerical
+CentralAir:
+  NA: ""
+  type: categorical
+  values:
+    - Y
+    - N
+  labels:
+    - Yes
+    - No
+PavedDrive:
+  NA: ""
+  type: categorical
+  values:
+    - Y
+    - P
+    - N
+  labels:
+    - Paved
+    - Partial Pavement
+    - Dirt/Gravel
