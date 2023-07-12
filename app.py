@@ -10,11 +10,16 @@ from model import (
     generate_models,
 )
 
+# Set page config
+st.set_page_config(page_title="Renovation Recommender", layout="wide")
 
 # Title and description
 st.image("cover.png")
 st.title("Property Improvement Predictor")
 st.write("Suggests property improvements to increase resale value.")
+
+# Set number of columns
+NUMBER_OF_COLUMNS = 3
 
 # Load feature info
 FEATURE_INFO = FeatureInfo(FEATURE_INFO_PATH)
@@ -34,11 +39,17 @@ def feature_average(feature):
 st.header("Look up renovation suggestions for your property:")
 with st.form("input"):
     input_data = {}
+    cols = st.columns(NUMBER_OF_COLUMNS)
+
     # Generate input fields
+    for i, feature in enumerate(FEATURE_INFO.get_features()):
+        # Cycle between columns
+        col = cols[i % NUMBER_OF_COLUMNS]
+
         # Generate input fields based on feature input type
         # Number input
         if FEATURE_INFO.get_input(feature) == "number_input":
-            input_data[feature] = st.number_input(
+            input_data[feature] = col.number_input(
                 label=FEATURE_INFO.get_label(feature),
                 min_value=FEATURE_INFO.get_min(feature),
                 max_value=FEATURE_INFO.get_max(feature),
@@ -47,7 +58,7 @@ with st.form("input"):
             )
         # Slider input
         elif FEATURE_INFO.get_input(feature) == "slider":
-            input_data[feature] = st.slider(
+            input_data[feature] = col.slider(
                 label=FEATURE_INFO.get_label(feature),
                 min_value=FEATURE_INFO.get_min(feature),
                 max_value=FEATURE_INFO.get_max(feature),
@@ -55,19 +66,19 @@ with st.form("input"):
             )
         # Selectbox input
         elif FEATURE_INFO.get_input(feature) == "selectbox":
-            input_data[feature] = st.selectbox(
+            input_data[feature] = col.selectbox(
                 label=FEATURE_INFO.get_label(feature),
                 options=FEATURE_INFO.get_labels(feature),
             )
         # Select slider input
         elif FEATURE_INFO.get_input(feature) == "select_slider":
-            input_data[feature] = st.select_slider(
+            input_data[feature] = col.select_slider(
                 label=FEATURE_INFO.get_label(feature),
                 options=FEATURE_INFO.get_labels(feature),
             )
         # Radio input
         elif FEATURE_INFO.get_input(feature) == "radio":
-            input_data[feature] = st.radio(
+            input_data[feature] = col.radio(
                 label=FEATURE_INFO.get_label(feature),
                 options=FEATURE_INFO.get_labels(feature),
             )
