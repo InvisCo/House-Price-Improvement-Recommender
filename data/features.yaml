@@ -2,6 +2,7 @@ BldgType:
   label: Building Type
   NA: ""
   type: categorical
+  renovation: False
   values:
     - 1Fam
     - 2fmCon
@@ -19,6 +20,7 @@ HouseStyle:
   label: Style of House
   NA: ""
   type: categorical
+  renovation: False
   values:
     - 1Story
     - 1.5Fin
@@ -42,6 +44,7 @@ ExterCond:
   label: Exterior Condition
   NA: ""
   type: categorical
+  renovation: True
   values:
     - Ex
     - Gd
@@ -54,32 +57,33 @@ ExterCond:
     - Typical
     - Fair
     - Poor
-  input: radio
+  input: selectbox
 YearRemodAdd:
   label: Remodel Year
+  type: numerical
+  renovation: False
   max: 2010
   min: 1950
-  type: numerical
   input: number_input
 LotArea:
   label: Lot Size (square feet)
+  type: numerical
+  renovation: False
   max: 250000
   min: 0
-  type: numerical
   input: number_input
 BsmtCond:
   label: Basement Condition
   NA: "NA"
   type: categorical
+  renovation: True
   values:
-    - Ex
     - Gd
     - TA
     - Fa
     - Po
     - NA
   labels:
-    - Excellent
     - Good
     - Typical - slight dampness allowed
     - Fair - dampness or some cracking or settling
@@ -88,79 +92,91 @@ BsmtCond:
   input: selectbox
 BsmtFinSF:
   label: Basement Area - Finished (square feet)
+  type: numerical
+  renovation: True
   max: 6000
   min: 0
-  type: numerical
   input: number_input
 BsmtUnfSF:
   label: Basement Area - Unfinished (square feet)
+  type: numerical
+  renovation: True
   max: 2500
   min: 0
-  type: numerical
   input: number_input
 BsmtFullBath:
   label: Number of Full Bathrooms in Basement
+  type: numerical
+  renovation: True
   max: 5
   min: 0
-  type: numerical
   input: slider
 BsmtHalfBath:
   label: Number of Half Bathrooms in Basement
+  type: numerical
+  renovation: True
   max: 5
   min: 0
-  type: numerical
   input: slider
 GrLivArea:
   label: Above Grade Living Area (square feet)
+  type: numerical
+  renovation: False
   max: 6000
   min: 0
-  type: numerical
   input: number_input
 BedroomAbvGr:
   label: Number of Bedrooms Above Grade
+  type: numerical
+  renovation: True
   max: 10
   min: 0
-  type: numerical
   input: slider
 KitchenAbvGr:
   label: Number of Kitchens
+  type: numerical
+  renovation: True
   max: 5
   min: 0
-  type: numerical
   input: slider
 FullBath:
   label: Number of Full Bathrooms
+  type: numerical
+  renovation: True
   max: 5
   min: 0
-  type: numerical
   input: slider
 HalfBath:
   label: Number of Half Bathrooms
+  type: numerical
+  renovation: True
   max: 5
   min: 0
-  type: numerical
   input: slider
 Fireplaces:
   label: Number of Fireplaces
+  type: numerical
+  renovation: True
   max: 5
   min: 0
-  type: numerical
   input: slider
 CentralAir:
   label: Is Central Air Conditioning Installed?
   NA: ""
   type: categorical
+  renovation: True
   values:
     - Y
     - N
   labels:
-    - Yes
-    - No
+    - "Yes"
+    - "No"
   input: radio
 PavedDrive:
   label: Is the Driveway Paved?
   NA: ""
   type: categorical
+  renovation: True
   values:
     - Y
     - P
