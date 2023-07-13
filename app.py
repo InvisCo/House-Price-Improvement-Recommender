@@ -1,5 +1,3 @@
-import numpy as np
-import pandas as pd
 import streamlit as st
 
 from model import (
@@ -14,7 +12,6 @@ from model import (
 st.set_page_config(page_title="Renovation Recommender", layout="wide")
 
 # Title and description
-st.image("cover.png")
 st.title("Property Improvement Predictor")
 st.write("Suggests property improvements to increase resale value.")
 
@@ -39,12 +36,12 @@ def feature_average(feature):
 st.header("Look up renovation suggestions for your property:")
 with st.form("input"):
     input_data = {}
-    cols = st.columns(NUMBER_OF_COLUMNS)
+    cols_form = st.columns(NUMBER_OF_COLUMNS)
 
     # Generate input fields
     for i, feature in enumerate(FEATURE_INFO.get_features()):
         # Cycle between columns
-        col = cols[i % NUMBER_OF_COLUMNS]
+        col = cols_form[i % NUMBER_OF_COLUMNS]
 
         # Generate input fields based on feature input type
         # Number input
@@ -85,17 +82,52 @@ with st.form("input"):
 
     submit = st.form_submit_button(type="primary", help="Find renovation suggestions")
 
-    if submit:
-        with st.spinner("Predicting..."):
-            # Copy input data to avoid modifying on user action
-            data_submitted = input_data.copy()
+if submit:
+    with st.spinner("Predicting..."):
+        # Copy input data to avoid modifying on user action
+        data_submitted = input_data.copy()
 
-            # Convert labels into values for categorical features
-            for feature in FEATURE_INFO.get_categorical_features():
-                data_submitted[feature] = FEATURE_INFO.map_label_to_value(
-                    feature, data_submitted[feature]
-                )
+        # Convert labels into values for categorical features
+        data_pred = FEATURE_INFO.convert_labels_to_values(data_submitted)
 
-            # Predict the price increase
-            predictions = find_price_increases(model, data_submitted, FEATURE_INFO)
+        # Predict the price increase
+        predictions = find_price_increases(model, data_pred, FEATURE_INFO)
+        predictions = predictions.sort_values(
+            "Price Increase", ascending=False
+        ).reset_index(drop=True)
 
+    cols_results = st.columns([0.4, 0.4, 0.2], gap="large")
+
+    with cols_results[0]:
+        st.subheader("Predicted Price Increase")
+        st.bar_chart(
+            predictions,
+            x="Feature",
+            y="Price Increase",
+        )
+
+    with cols_results[1]:
+        # Format price increase column as currency
+        st.subheader("  ")
+        predictions["Price Increase"] = predictions["Price Increase"].map(
+            lambda x: f"${round(x,-2):,.0f}"
+        )
+        # Display formatted prediction columns
+        st.dataframe(predictions[["Renovation", "Price Increase"]], hide_index=True)
+
+    with cols_results[2]:
+        st.subheader("Model Metrics")
+        # Test results
+        # Output Number format = 0.00E+00
+        st.metric(
+            label="R Squared Score",
+            value=f"{test_results['r2']:.2e}",
+        )
+        st.metric(
+            label="Mean Square Error",
+            value=f"{test_results['mse']:.2e}",
+        )
+        st.metric(
+            label="Mean Absolute Error",
+            value=f"{test_results['mae']:.2e}",
+        )

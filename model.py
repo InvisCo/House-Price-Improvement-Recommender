@@ -1,12 +1,12 @@
+from math import floor, log10
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-import numpy as np
 import pandas as pd
 import yaml
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
 
@@ -73,12 +73,15 @@ class FeatureInfo:
             feature for feature in self.__feature_data if self.is_renovatable(feature)
         ]
 
-    # Mapping functionss
-    def map_label_to_value(self, feature: str, label: str) -> str:
-        return self.get_values(feature)[self.get_labels(feature).index(label)]
-
-    def map_value_to_label(self, feature: str, value: str) -> str:
-        return self.get_label(feature)[self.get_value(feature).index(value)]
+    # Mapping functions
+    def convert_labels_to_values(self, data: Dict[str, str]) -> Dict[str, str]:
+        data = data.copy()
+        # Change categorical feature values to labels
+        for feature in self.get_categorical_features():
+            data[feature] = self.get_values(feature)[
+                self.get_labels(feature).index(data[feature])
+            ]
+        return data
 
 
 def process_data(
@@ -135,9 +138,15 @@ def generate_models(file: Path, feature_info: FeatureInfo):
 
     # Test model
     y_pred = model.predict(X_test)
+    # Get mean absolute error, mean squared error and r2 score
+    mae = mean_absolute_error(y_test, y_pred)
+    mse = mean_squared_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    # round to 3 significant figures
     test_results = {
-        "mse": mean_squared_error(y_test, y_pred),
-        "r2": r2_score(y_test, y_pred),
+        "mae": round(mae, -int(floor(log10(abs(mae)))) + 2),
+        "mse": round(mse, -int(floor(log10(abs(mse)))) + 2),
+        "r2": round(r2, -int(floor(log10(abs(r2)))) + 2),
     }
 
     return model, test_results
@@ -147,7 +156,7 @@ def find_price_increases(
     model: Pipeline,
     input_data: dict,
     feature_info: FeatureInfo,
-):
+) -> pd.DataFrame:
     # Convert input data into a dataframe with the correct columns
     input_df = pd.DataFrame(index=[0], columns=feature_info.get_features())
     for feature, value in input_data.items():
@@ -188,10 +197,8 @@ def find_price_increases(
             prev_index = max(current_index - 1, 0)
 
             # Set the new values
-            X_up[feature] = values[next_index] if next_index != current_index else None
-            X_down[feature] = (
-                values[prev_index] if prev_index != current_index else None
-            )
+            X_up[feature] = values[next_index]
+            X_down[feature] = values[prev_index]
 
         # Predict the new price and calculate the change
         for X in (X_up, X_down):
@@ -202,15 +209,23 @@ def find_price_increases(
                 # Calculate the change
                 change = new_price - old_price
 
-                # Only store the result if the price increased
-                if change > 0:
+                # Only store the result if the price increased by at least 1000
+                if change >= 1000:
                     # Round the change to the nearest integer
                     change = int(round(change, 0))
-                    results.append((feature, change))
+                    # Get the feature name and values
+                    feature_label = feature_info.get_label(feature)
+                    from_val = input_df[feature][0]
+                    to_val = X[feature][0]
+                    # Create a string describing the renovation
+                    renovation = f"Change {feature_label} from {from_val} to {to_val}"
+                    results.append(
+                        (feature_label, from_val, to_val, renovation, change)
+                    )
             except ValueError:
                 # Exception raised if X contains a categorical value that is not in the training data
                 continue
 
-    # Sort the results by price change in descending order and return them
-    results.sort(key=lambda x: x[1], reverse=True)
-    return results
+    return pd.DataFrame(
+        results, columns=["Feature", "From", "To", "Renovation", "Price Increase"]
+    )
