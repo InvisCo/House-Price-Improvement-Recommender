@@ -9,12 +9,12 @@ This tool will suggest renovations to a house based on the details a user enters
 
 ### Files
 
-- **model.py** contains all the functions that deal with data processing and the Linear Regression model from SciKit-Learn.
-- **app.py** contains is run by Streamlit and describes the UI layout and the user interaction.
-- **data/features.yaml** contains information about the features that are used for prediction. This is used throughout the app via the `FeatureInfo` class.
-- **data/train.csv** contains the training data of the Ames Housing Dataset retreived from [Kaggle](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data).
-- **requirements.txt** lists all the Python packages that are needed for this app   to run.
-- **Dockerfile** contains the instructions to build a Docker image.
+- *model.py* contains all the functions that deal with data processing and the Linear Regression model from SciKit-Learn.
+- *app.py* contains is run by Streamlit and describes the UI layout and the user interaction.
+- *data/features.yaml* contains information about the features that are used for prediction. This is used throughout the app via the `FeatureInfo` class.
+- *data/train.csv* contains the training data of the Ames Housing Dataset retreived from [Kaggle](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data).
+- *requirements.txt* lists all the Python packages that are needed for this app   to run.
+- *Dockerfile* contains the instructions to build a Docker image.
 
 ## Running the program
 
