@@ -173,3 +173,5 @@ cython_debug/
 #.idea/
 
 *.zip
+ruff.toml
+data/data_description.txt
